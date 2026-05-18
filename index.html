@@ -39,6 +39,14 @@
     font-size: 15px;
   }
 
+  /* ── CONTAINER ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 2rem;
+  }
+
   /* ── NAV ── */
   nav {
     position: fixed;
@@ -47,8 +55,14 @@
     background: rgba(6, 15, 31, 0.92);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(13, 138, 116, 0.25);
-    padding: 0 2rem;
     height: 60px;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -97,12 +111,19 @@
   #hero {
     min-height: 100vh;
     background: var(--navy-deep);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 140px 2rem 5rem;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
-    overflow: hidden;
-    padding: 100px 4rem 5rem;
   }
 
   /* chromatogram background art */
@@ -236,10 +257,10 @@
   /* chromatogram mini display */
   .hero-visual {
     position: absolute;
-    right: 4rem;
+    right: 2rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 380px;
+    width: 360px;
   }
 
   .chrom-display {
@@ -301,7 +322,8 @@
   }
 
   /* ── SECTION SHARED ── */
-  section { padding: 6rem 4rem; }
+  section { padding: 6rem 0; }
+  section > .container { }
 
   .section-tag {
     font-family: var(--mono);
@@ -819,8 +841,14 @@
   /* ── FOOTER ── */
   footer {
     background: var(--navy-deep);
-    padding: 2.5rem 4rem;
     border-top: 1px solid rgba(13, 138, 116, 0.2);
+    padding: 2.5rem 0;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -843,9 +871,10 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    section { padding: 4rem 1.5rem; }
+    section { padding: 4rem 0; }
+    .container { padding: 0 1.25rem; }
     nav ul { display: none; }
-    #hero { padding: 100px 1.5rem 4rem; }
+    .hero-inner { padding: 100px 1.25rem 4rem; }
     .hero-visual { display: none; }
     .course-block { grid-template-columns: 1fr; }
     .course-num { flex-direction: row; padding: 1rem 1.5rem; justify-content: flex-start; gap: 0.8rem; }
@@ -853,7 +882,7 @@
     .course-body { padding: 0 1.5rem 1.5rem; }
     .sim-grid { grid-template-columns: 1fr; }
     .target-grid { grid-template-columns: 1fr; }
-    footer { padding: 2rem 1.5rem; }
+    .footer-inner { padding: 0 1.25rem; }
   }
 
   /* chromatogram SVG style */
@@ -864,15 +893,17 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">KHP-HPLC</a>
-  <ul>
-    <li><a href="#features">교육특징</a></li>
-    <li><a href="#courses">교육과정</a></li>
-    <li><a href="#simulator">AI 시뮬레이터</a></li>
-    <li><a href="#target">모집대상</a></li>
-    <li><a href="#contact">문의·신청</a></li>
-    <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSd81kdOP_xEvw6zx1spXd8CZuEJ6TKH1tXiuf4f6UNAU0WdUg/viewform" class="nav-apply">교육 신청 문의 →</a></li>
-  </ul>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">KHP-HPLC</a>
+    <ul>
+      <li><a href="#features">교육특징</a></li>
+      <li><a href="#courses">교육과정</a></li>
+      <li><a href="#simulator">AI 시뮬레이터</a></li>
+      <li><a href="#target">모집대상</a></li>
+      <li><a href="#contact">문의·신청</a></li>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSd81kdOP_xEvw6zx1spXd8CZuEJ6TKH1tXiuf4f6UNAU0WdUg/viewform" class="nav-apply">교육 신청 문의 →</a></li>
+    </ul>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -891,92 +922,94 @@
     <text x="30" y="30" fill="#0d8a74" font-size="14" letter-spacing="3">mAU</text>
   </svg>
 
-  <div class="hero-badge">HPLC PRACTICAL TRAINING PROGRAM · KHP</div>
+  <div class="hero-inner">
+    <div class="hero-badge">HPLC PRACTICAL TRAINING PROGRAM · KHP</div>
 
-  <h1 class="hero-title">
-    HPLC
-    <span class="accent">크로마토그래피</span>
-  </h1>
-  <p class="hero-subtitle-kr">크로마토그래피 실무교육 프로그램</p>
-  <p class="hero-desc">
-    RP-HPLC 기반 카페인 함량 분석부터 SEC-HPLC 단백질 순도분석, 시험분석법 밸리데이션까지 —
-    산업 현장에서 즉시 활용 가능한 크로마토그래피 분석 실무 역량을 체계적으로 훈련합니다.
-    현장 실습 후 AI 기반 SOP 복습 프로그램을 통해 자기주도 학습이 가능합니다.
-  </p>
+    <h1 class="hero-title">
+      HPLC
+      <span class="accent">크로마토그래피</span>
+    </h1>
+    <p class="hero-subtitle-kr">크로마토그래피 실무교육 프로그램</p>
+    <p class="hero-desc">
+      RP-HPLC 기반 카페인 함량 분석부터 SEC-HPLC 단백질 순도분석, 시험분석법 밸리데이션까지 —
+      산업 현장에서 즉시 활용 가능한 크로마토그래피 분석 실무 역량을 체계적으로 훈련합니다.
+      현장 실습 후 AI 기반 SOP 복습 프로그램을 통해 자기주도 학습이 가능합니다.
+    </p>
 
-  <div class="hero-ctas">
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd81kdOP_xEvw6zx1spXd8CZuEJ6TKH1tXiuf4f6UNAU0WdUg/viewform" class="btn-primary">📋 교육 신청 문의하기</a>
-    <a href="#courses" class="btn-outline">교육과정 보기</a>
-  </div>
+    <div class="hero-ctas">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSd81kdOP_xEvw6zx1spXd8CZuEJ6TKH1tXiuf4f6UNAU0WdUg/viewform" class="btn-primary">📋 교육 신청 문의하기</a>
+      <a href="#courses" class="btn-outline">교육과정 보기</a>
+    </div>
 
-  <div class="hero-stats">
-    <div class="stat-item">
-      <div class="stat-value">3</div>
-      <div class="stat-label">TRAINING COURSES</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">₩0</div>
-      <div class="stat-label">수강료 (환급과정)</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">AI</div>
-      <div class="stat-label">SOP 복습 시뮬레이터</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">ICH</div>
-      <div class="stat-label">Q2 밸리데이션 연계</div>
-    </div>
-  </div>
-
-  <!-- Chromatogram mini display (desktop) -->
-  <div class="hero-visual">
-    <div class="chrom-display">
-      <div class="chrom-header">
-        <span class="chrom-label">RP-HPLC · CAFFEINE ANALYSIS</span>
-        <div class="chrom-dots">
-          <div class="chrom-dot"></div>
-          <div class="chrom-dot" style="opacity:.5"></div>
-          <div class="chrom-dot" style="opacity:.25"></div>
-        </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-value">3</div>
+        <div class="stat-label">TRAINING COURSES</div>
       </div>
+      <div class="stat-item">
+        <div class="stat-value">₩0</div>
+        <div class="stat-label">수강료 (환급과정)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">AI</div>
+        <div class="stat-label">SOP 복습 시뮬레이터</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">ICH</div>
+        <div class="stat-label">Q2 밸리데이션 연계</div>
+      </div>
+    </div>
 
-      <svg viewBox="0 0 340 160" width="100%" fill="none" xmlns="http://www.w3.org/2000/svg" class="chrom-svg">
-        <!-- Axes -->
-        <line x1="30" y1="10" x2="30" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
-        <line x1="30" y1="140" x2="330" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
-        <!-- Baseline -->
-        <line x1="30" y1="135" x2="330" y2="135" stroke="rgba(13,138,116,0.3)" stroke-width="0.5" stroke-dasharray="3 4"/>
-        <!-- Chromatogram trace -->
-        <polyline points="30,135 60,134 90,133 110,130 125,120 135,100 142,72 147,44 150,22 153,10 156,5 158,8 161,18 165,42 170,72 178,102 190,122 210,131 240,134 270,133 285,128 292,118 296,104 299,88 301,72 303,56 305,42 307,28 308,18 309,12 310,9 311,12 312,22 314,38 317,58 321,82 325,108 328,126 330,134" stroke="#14b89a" stroke-width="1.5"/>
-        <!-- Peak labels -->
-        <line x1="156" y1="5" x2="156" y2="140" stroke="rgba(13,138,116,0.2)" stroke-width="0.5" stroke-dasharray="2 3"/>
-        <line x1="310" y1="9" x2="310" y2="140" stroke="rgba(13,138,116,0.2)" stroke-width="0.5" stroke-dasharray="2 3"/>
-        <text x="148" y="155" fill="rgba(255,255,255,0.4)" font-size="7" text-anchor="middle">Caffeine</text>
-        <text x="148" y="163" fill="rgba(20,184,154,0.7)" font-size="7" text-anchor="middle">3.84 min</text>
-        <text x="310" y="155" fill="rgba(255,255,255,0.4)" font-size="7" text-anchor="middle">IS</text>
-        <text x="310" y="163" fill="rgba(20,184,154,0.7)" font-size="7" text-anchor="middle">9.21 min</text>
-        <!-- y-axis label -->
-        <text x="10" y="75" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle" transform="rotate(-90,10,75)">mAU</text>
-        <!-- x-axis label -->
-        <text x="180" y="172" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle">Retention Time (min)</text>
-      </svg>
+    <!-- Chromatogram mini display (desktop) -->
+    <div class="hero-visual">
+      <div class="chrom-display">
+        <div class="chrom-header">
+          <span class="chrom-label">RP-HPLC · CAFFEINE ANALYSIS</span>
+          <div class="chrom-dots">
+            <div class="chrom-dot"></div>
+            <div class="chrom-dot" style="opacity:.5"></div>
+            <div class="chrom-dot" style="opacity:.25"></div>
+          </div>
+        </div>
 
-      <div class="peak-info">
-        <div class="peak-card">
-          <div class="pk-name">PEAK AREA</div>
-          <div class="pk-val">1,842,550</div>
-        </div>
-        <div class="peak-card">
-          <div class="pk-name">RESOLUTION</div>
-          <div class="pk-val">Rs = 4.7</div>
-        </div>
-        <div class="peak-card">
-          <div class="pk-name">R² (LINEARITY)</div>
-          <div class="pk-val">0.9998</div>
-        </div>
-        <div class="peak-card">
-          <div class="pk-name">TAILING FACTOR</div>
-          <div class="pk-val">T = 1.04</div>
+        <svg viewBox="0 0 340 160" width="100%" fill="none" xmlns="http://www.w3.org/2000/svg" class="chrom-svg">
+          <!-- Axes -->
+          <line x1="30" y1="10" x2="30" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+          <line x1="30" y1="140" x2="330" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+          <!-- Baseline -->
+          <line x1="30" y1="135" x2="330" y2="135" stroke="rgba(13,138,116,0.3)" stroke-width="0.5" stroke-dasharray="3 4"/>
+          <!-- Chromatogram trace -->
+          <polyline points="30,135 60,134 90,133 110,130 125,120 135,100 142,72 147,44 150,22 153,10 156,5 158,8 161,18 165,42 170,72 178,102 190,122 210,131 240,134 270,133 285,128 292,118 296,104 299,88 301,72 303,56 305,42 307,28 308,18 309,12 310,9 311,12 312,22 314,38 317,58 321,82 325,108 328,126 330,134" stroke="#14b89a" stroke-width="1.5"/>
+          <!-- Peak labels -->
+          <line x1="156" y1="5" x2="156" y2="140" stroke="rgba(13,138,116,0.2)" stroke-width="0.5" stroke-dasharray="2 3"/>
+          <line x1="310" y1="9" x2="310" y2="140" stroke="rgba(13,138,116,0.2)" stroke-width="0.5" stroke-dasharray="2 3"/>
+          <text x="148" y="155" fill="rgba(255,255,255,0.4)" font-size="7" text-anchor="middle">Caffeine</text>
+          <text x="148" y="163" fill="rgba(20,184,154,0.7)" font-size="7" text-anchor="middle">3.84 min</text>
+          <text x="310" y="155" fill="rgba(255,255,255,0.4)" font-size="7" text-anchor="middle">IS</text>
+          <text x="310" y="163" fill="rgba(20,184,154,0.7)" font-size="7" text-anchor="middle">9.21 min</text>
+          <!-- y-axis label -->
+          <text x="10" y="75" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle" transform="rotate(-90,10,75)">mAU</text>
+          <!-- x-axis label -->
+          <text x="180" y="172" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle">Retention Time (min)</text>
+        </svg>
+
+        <div class="peak-info">
+          <div class="peak-card">
+            <div class="pk-name">PEAK AREA</div>
+            <div class="pk-val">1,842,550</div>
+          </div>
+          <div class="peak-card">
+            <div class="pk-name">RESOLUTION</div>
+            <div class="pk-val">Rs = 4.7</div>
+          </div>
+          <div class="peak-card">
+            <div class="pk-name">R² (LINEARITY)</div>
+            <div class="pk-val">0.9998</div>
+          </div>
+          <div class="peak-card">
+            <div class="pk-name">TAILING FACTOR</div>
+            <div class="pk-val">T = 1.04</div>
+          </div>
         </div>
       </div>
     </div>
@@ -985,6 +1018,7 @@
 
 <!-- FEATURES -->
 <section id="features">
+  <div class="container">
   <span class="section-tag">교육 특징</span>
   <h2 class="section-title">현장 중심 집중 실습</h2>
   <p class="section-desc">
@@ -1035,10 +1069,12 @@
       <div class="feat-desc">시험분석법 밸리데이션 교육을 통해 ICH Q2(R2), 식약처, FDA 가이드라인 기반의 실무 문서 작성 역량을 함양합니다.</div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- COURSES -->
 <section id="courses">
+  <div class="container">
   <span class="section-tag">교육과정</span>
   <h2 class="section-title">3단계 실무 커리큘럼</h2>
   <p class="section-desc">
@@ -1147,10 +1183,12 @@
     </div>
 
   </div>
+  </div>
 </section>
 
 <!-- AI SIMULATOR -->
 <section id="simulator">
+  <div class="container">
   <span class="section-tag">AI REVIEW SIMULATOR</span>
   <h2 class="section-title">교육 후에도 반복 학습</h2>
   <p class="section-desc">
@@ -1197,13 +1235,15 @@
   </div>
 
   <div class="sim-cta">
-    <a href="" class="btn-primary" target="_blank">🤖 AI 시뮬레이터 체험하기 → 현장강의제공 </a>
+    <a href="" class="btn-primary" target="_blank">🤖 AI 시뮬레이터 체험하기 → 현장강의시 제공 </a>
     <span class="sim-note">수료자 전용 · 무료 제공</span>
+  </div>
   </div>
 </section>
 
 <!-- OUTCOMES -->
 <section id="outcomes">
+  <div class="container">
   <span class="section-tag">기대 효과</span>
   <h2 class="section-title">수료 후 달라지는 것들</h2>
   <p class="section-desc">
@@ -1236,10 +1276,12 @@
       <div class="out-text">AI SOP 시뮬레이터를 통한 자기주도 반복 학습으로 교육 효과 장기 유지</div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- TARGET + SUBSIDY -->
 <section id="target">
+  <div class="container">
   <span class="section-tag">모집 대상</span>
   <h2 class="section-title">이런 분들을 위한 과정입니다</h2>
   <p class="section-desc">
@@ -1269,10 +1311,12 @@
       </ul>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
+  <div class="container">
   <span class="section-tag">문의 · 신청</span>
   <h2 class="section-title">지금 바로 신청하세요</h2>
   <p class="section-desc">
@@ -1305,17 +1349,21 @@
       <span class="apply-arrow">→</span>
     </a>
   </div>
+  </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-info">
-    재능대학교 바이오테크과 · AI-바이오분석특화연구소 · K-하이테크플랫폼사업단<br>
-    JEI University · Dept. of Biotechnology · Incheon, Korea<br>
-    © 2025 KHP-HPLC Program
+  <div class="footer-inner">
+    <div class="footer-info">
+      재능대학교 바이오테크과 · AI-바이오분석특화연구소 · K-하이테크플랫폼사업단<br>
+      JEI University · Dept. of Biotechnology · Incheon, Korea<br>
+      © 2025 KHP-HPLC Program
+    </div>
+    <div class="footer-logo">KHP-HPLC</div>
   </div>
-  <div class="footer-logo">KHP-HPLC</div>
 </footer>
 
 </body>
 </html>
+
