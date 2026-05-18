@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPLC 크로마토그래피 실무교육 | 재능대학교 K-하이테크플랫폼사업단</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0b1e3d;
+    --navy-deep: #060f1f;
+    --teal: #0d8a74;
+    --teal-light: #14b89a;
+    --teal-pale: #e0f5f1;
+    --amber: #e8a020;
+    --amber-pale: #fef5e0;
+    --gray-100: #f5f6f8;
+    --gray-200: #e8eaee;
+    --gray-400: #9aa0ad;
+    --gray-600: #5a6272;
+    --gray-800: #2d3344;
+    --white: #ffffff;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans-kr: 'IBM Plex Sans KR', sans-serif;
+    --display: 'Space Grotesk', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans-kr);
+    background: var(--white);
+    color: var(--gray-800);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(6, 15, 31, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(13, 138, 116, 0.25);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--teal-light);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav ul a {
+    text-decoration: none;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    font-family: var(--sans-kr);
+    transition: color 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  nav ul a:hover { color: var(--teal-light); }
+
+  .nav-apply {
+    background: var(--teal);
+    color: var(--white) !important;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 13px !important;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-apply:hover { background: var(--teal-light) !important; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: var(--navy-deep);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 100px 4rem 5rem;
+  }
+
+  /* chromatogram background art */
+  .hero-bg-art {
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(13, 138, 116, 0.15);
+    border: 1px solid rgba(13, 138, 116, 0.4);
+    color: var(--teal-light);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    padding: 6px 14px;
+    border-radius: 3px;
+    margin-bottom: 2rem;
+    width: fit-content;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+  }
+
+  .hero-title .accent {
+    color: var(--teal-light);
+    display: block;
+  }
+
+  .hero-subtitle-kr {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-desc {
+    max-width: 620px;
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 4rem;
+  }
+
+  .btn-primary {
+    background: var(--teal);
+    color: var(--white);
+    padding: 12px 28px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary:hover { background: var(--teal-light); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    padding: 12px 28px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--teal-light); color: var(--teal-light); }
+
+  /* stats strip */
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 2rem;
+  }
+
+  .stat-item {}
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--teal-light);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* chromatogram mini display */
+  .hero-visual {
+    position: absolute;
+    right: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 380px;
+  }
+
+  .chrom-display {
+    background: rgba(13, 138, 116, 0.04);
+    border: 1px solid rgba(13, 138, 116, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .chrom-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .chrom-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--teal-light);
+    letter-spacing: 0.1em;
+  }
+
+  .chrom-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+
+  .chrom-dots { display: flex; gap: 5px; }
+
+  .peak-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+
+  .peak-card {
+    background: rgba(13, 138, 116, 0.08);
+    border: 1px solid rgba(13, 138, 116, 0.15);
+    border-radius: 4px;
+    padding: 8px 10px;
+  }
+
+  .peak-card .pk-name {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+
+  .peak-card .pk-val {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--teal-light);
+    font-weight: 500;
+  }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 6rem 4rem; }
+
+  .section-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .section-desc {
+    color: var(--gray-600);
+    max-width: 600px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  /* ── FEATURES ── */
+  #features {
+    background: var(--gray-100);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .feature-card:hover {
+    border-color: var(--teal);
+    box-shadow: 0 4px 20px rgba(13, 138, 116, 0.08);
+  }
+
+  .feat-icon {
+    width: 40px; height: 40px;
+    background: var(--teal-pale);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 18px;
+  }
+
+  .feat-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .feat-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+
+  .feat-desc {
+    font-size: 13.5px;
+    color: var(--gray-600);
+    line-height: 1.7;
+  }
+
+  /* ── COURSES ── */
+  #courses {
+    background: var(--white);
+  }
+
+  .course-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .course-block {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .course-block:hover { border-color: var(--teal); }
+
+  .course-num {
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+
+  .course-num .num {
+    font-family: var(--mono);
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--teal-light);
+    line-height: 1;
+  }
+
+  .course-num .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  .course-body { padding: 2rem 2rem 2rem 0; }
+
+  .course-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .course-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--teal-pale);
+    color: var(--teal);
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .course-badge.coming {
+    background: var(--amber-pale);
+    color: var(--amber);
+  }
+
+  .course-duration {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gray-400);
+    letter-spacing: 0.06em;
+    align-self: center;
+  }
+
+  .course-title {
+    font-family: var(--display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.4rem;
+  }
+
+  .course-subtitle {
+    font-size: 13px;
+    color: var(--gray-400);
+    margin-bottom: 0.9rem;
+  }
+
+  .course-desc {
+    font-size: 14px;
+    color: var(--gray-600);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .course-topics {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.3rem 1.5rem;
+  }
+
+  .course-topics li {
+    font-size: 13px;
+    color: var(--gray-600);
+    padding: 3px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .course-topics li::before {
+    content: '—';
+    font-family: var(--mono);
+    color: var(--teal);
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .course-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 1rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+
+  .course-link:hover { color: var(--teal-light); }
+
+  /* ── AI SIMULATOR ── */
+  #simulator {
+    background: var(--navy-deep);
+    color: var(--white);
+  }
+
+  #simulator .section-title { color: var(--white); }
+  #simulator .section-desc { color: rgba(255,255,255,0.55); }
+  #simulator .section-tag { color: var(--teal-light); }
+
+  .sim-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .sim-feature {
+    border: 1px solid rgba(13, 138, 116, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: rgba(13, 138, 116, 0.04);
+    transition: border-color 0.2s;
+  }
+
+  .sim-feature:hover { border-color: rgba(13, 138, 116, 0.5); }
+
+  .sim-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .sim-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--teal-light);
+    margin-bottom: 0.4rem;
+  }
+
+  .sim-desc {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+  }
+
+  .sim-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .sim-note {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── OUTCOMES ── */
+  #outcomes {
+    background: var(--gray-100);
+  }
+
+  .outcome-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--gray-200);
+  }
+
+  .outcome-item {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    align-items: center;
+    gap: 0;
+    transition: background 0.15s;
+  }
+
+  .outcome-item:hover { background: var(--teal-pale); }
+
+  .out-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--teal);
+    padding: 1.2rem 1.5rem;
+    font-weight: 500;
+    border-right: 1px solid var(--gray-200);
+    text-align: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .out-text {
+    padding: 1.2rem 1.5rem;
+    font-size: 14px;
+    color: var(--gray-700);
+    line-height: 1.7;
+  }
+
+  /* ── TARGET ── */
+  #target {
+    background: var(--white);
+  }
+
+  .target-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .target-list { list-style: none; }
+
+  .target-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--gray-200);
+    font-size: 14.5px;
+    color: var(--gray-800);
+  }
+
+  .target-list li:last-child { border-bottom: none; }
+
+  .check {
+    width: 20px; height: 20px;
+    background: var(--teal-pale);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .check::after {
+    content: '✓';
+    font-size: 11px;
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  .subsidy-box {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 2rem;
+    color: var(--white);
+  }
+
+  .subsidy-box h3 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--teal-light);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .subsidy-box h2 {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+  }
+
+  .subsidy-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .subsidy-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+  }
+
+  .subsidy-list li::before {
+    content: '·';
+    color: var(--teal-light);
+    font-size: 1.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .contact-card {
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .contact-card .cc-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .contact-card .cc-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .contact-card .cc-value {
+    font-size: 14px;
+    color: var(--navy);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .contact-card .cc-value a {
+    color: var(--teal);
+    text-decoration: none;
+  }
+
+  .contact-card .cc-value a:hover { color: var(--teal-light); }
+
+  .contact-apply {
+    background: var(--teal);
+    border: none;
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    transition: background 0.2s;
+    min-height: 130px;
+  }
+
+  .contact-apply:hover { background: var(--teal-light); }
+
+  .apply-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+  }
+
+  .apply-text {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.3;
+  }
+
+  .apply-arrow {
+    font-family: var(--mono);
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.7);
+    align-self: flex-end;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy-deep);
+    padding: 2.5rem 4rem;
+    border-top: 1px solid rgba(13, 138, 116, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-info {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.8;
+  }
+
+  .footer-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal-light);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    section { padding: 4rem 1.5rem; }
+    nav ul { display: none; }
+    #hero { padding: 100px 1.5rem 4rem; }
+    .hero-visual { display: none; }
+    .course-block { grid-template-columns: 1fr; }
+    .course-num { flex-direction: row; padding: 1rem 1.5rem; justify-content: flex-start; gap: 0.8rem; }
+    .course-num .num { font-size: 1.2rem; }
+    .course-body { padding: 0 1.5rem 1.5rem; }
+    .sim-grid { grid-template-columns: 1fr; }
+    .target-grid { grid-template-columns: 1fr; }
+    footer { padding: 2rem 1.5rem; }
+  }
+
+  /* chromatogram SVG style */
+  .chrom-svg text { font-family: 'IBM Plex Mono', monospace; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">KHP-HPLC</a>
+  <ul>
+    <li><a href="#features">교육특징</a></li>
+    <li><a href="#courses">교육과정</a></li>
+    <li><a href="#simulator">AI 시뮬레이터</a></li>
+    <li><a href="#target">모집대상</a></li>
+    <li><a href="#contact">문의·신청</a></li>
+    <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSd81kdOP_xEvw6zx1spXd8CZuEJ6TKH1tXiuf4f6UNAU0WdUg/viewform" class="nav-apply">교육 신청 문의 →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <!-- Background SVG art: stylized chromatogram peaks -->
+  <svg class="hero-bg-art" viewBox="0 0 1400 600" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="0,550 100,548 180,545 240,540 280,520 300,480 310,420 315,330 318,230 320,150 322,80 325,30 330,5 335,30 340,80 345,160 350,260 360,380 375,460 400,510 450,535 520,545 620,548 700,549 800,548 860,542 890,520 900,490 905,440 908,380 910,310 912,250 914,190 916,140 918,100 920,70 922,50 924,60 926,80 928,120 930,170 933,230 938,300 945,370 955,430 970,475 995,508 1040,530 1100,542 1200,548 1400,550" stroke="#0d8a74" stroke-width="1.5"/>
+    <!-- baseline -->
+    <line x1="0" y1="555" x2="1400" y2="555" stroke="#0d8a74" stroke-width="0.5" stroke-dasharray="4 6"/>
+    <!-- tick marks -->
+    <line x1="320" y1="555" x2="320" y2="565" stroke="#0d8a74" stroke-width="0.8"/>
+    <line x1="920" y1="555" x2="920" y2="565" stroke="#0d8a74" stroke-width="0.8"/>
+    <text x="316" y="580" fill="#0d8a74" font-size="14" text-anchor="middle">3.84 min</text>
+    <text x="916" y="580" fill="#0d8a74" font-size="14" text-anchor="middle">9.21 min</text>
+    <!-- axis label -->
+    <text x="30" y="30" fill="#0d8a74" font-size="14" letter-spacing="3">mAU</text>
+  </svg>
+
+  <div class="hero-badge">HPLC PRACTICAL TRAINING PROGRAM · KHP</div>
+
+  <h1 class="hero-title">
+    HPLC
+    <span class="accent">크로마토그래피</span>
+  </h1>
+  <p class="hero-subtitle-kr">크로마토그래피 실무교육 프로그램</p>
+  <p class="hero-desc">
+    RP-HPLC 기반 카페인 함량 분석부터 SEC-HPLC 단백질 순도분석, 시험분석법 밸리데이션까지 —
+    산업 현장에서 즉시 활용 가능한 크로마토그래피 분석 실무 역량을 체계적으로 훈련합니다.
+    현장 실습 후 AI 기반 SOP 복습 프로그램을 통해 자기주도 학습이 가능합니다.
+  </p>
+
+  <div class="hero-ctas">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd81kdOP_xEvw6zx1spXd8CZuEJ6TKH1tXiuf4f6UNAU0WdUg/viewform" class="btn-primary">📋 교육 신청 문의하기</a>
+    <a href="#courses" class="btn-outline">교육과정 보기</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-value">3</div>
+      <div class="stat-label">TRAINING COURSES</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">₩0</div>
+      <div class="stat-label">수강료 (환급과정)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">AI</div>
+      <div class="stat-label">SOP 복습 시뮬레이터</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">ICH</div>
+      <div class="stat-label">Q2 밸리데이션 연계</div>
+    </div>
+  </div>
+
+  <!-- Chromatogram mini display (desktop) -->
+  <div class="hero-visual">
+    <div class="chrom-display">
+      <div class="chrom-header">
+        <span class="chrom-label">RP-HPLC · CAFFEINE ANALYSIS</span>
+        <div class="chrom-dots">
+          <div class="chrom-dot"></div>
+          <div class="chrom-dot" style="opacity:.5"></div>
+          <div class="chrom-dot" style="opacity:.25"></div>
+        </div>
+      </div>
+
+      <svg viewBox="0 0 340 160" width="100%" fill="none" xmlns="http://www.w3.org/2000/svg" class="chrom-svg">
+        <!-- Axes -->
+        <line x1="30" y1="10" x2="30" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <line x1="30" y1="140" x2="330" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <!-- Baseline -->
+        <line x1="30" y1="135" x2="330" y2="135" stroke="rgba(13,138,116,0.3)" stroke-width="0.5" stroke-dasharray="3 4"/>
+        <!-- Chromatogram trace -->
+        <polyline points="30,135 60,134 90,133 110,130 125,120 135,100 142,72 147,44 150,22 153,10 156,5 158,8 161,18 165,42 170,72 178,102 190,122 210,131 240,134 270,133 285,128 292,118 296,104 299,88 301,72 303,56 305,42 307,28 308,18 309,12 310,9 311,12 312,22 314,38 317,58 321,82 325,108 328,126 330,134" stroke="#14b89a" stroke-width="1.5"/>
+        <!-- Peak labels -->
+        <line x1="156" y1="5" x2="156" y2="140" stroke="rgba(13,138,116,0.2)" stroke-width="0.5" stroke-dasharray="2 3"/>
+        <line x1="310" y1="9" x2="310" y2="140" stroke="rgba(13,138,116,0.2)" stroke-width="0.5" stroke-dasharray="2 3"/>
+        <text x="148" y="155" fill="rgba(255,255,255,0.4)" font-size="7" text-anchor="middle">Caffeine</text>
+        <text x="148" y="163" fill="rgba(20,184,154,0.7)" font-size="7" text-anchor="middle">3.84 min</text>
+        <text x="310" y="155" fill="rgba(255,255,255,0.4)" font-size="7" text-anchor="middle">IS</text>
+        <text x="310" y="163" fill="rgba(20,184,154,0.7)" font-size="7" text-anchor="middle">9.21 min</text>
+        <!-- y-axis label -->
+        <text x="10" y="75" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle" transform="rotate(-90,10,75)">mAU</text>
+        <!-- x-axis label -->
+        <text x="180" y="172" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle">Retention Time (min)</text>
+      </svg>
+
+      <div class="peak-info">
+        <div class="peak-card">
+          <div class="pk-name">PEAK AREA</div>
+          <div class="pk-val">1,842,550</div>
+        </div>
+        <div class="peak-card">
+          <div class="pk-name">RESOLUTION</div>
+          <div class="pk-val">Rs = 4.7</div>
+        </div>
+        <div class="peak-card">
+          <div class="pk-name">R² (LINEARITY)</div>
+          <div class="pk-val">0.9998</div>
+        </div>
+        <div class="peak-card">
+          <div class="pk-name">TAILING FACTOR</div>
+          <div class="pk-val">T = 1.04</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <span class="section-tag">교육 특징</span>
+  <h2 class="section-title">현장 중심 집중 실습</h2>
+  <p class="section-desc">
+    단순 이론 강의를 넘어, 실제 바이오·제약·식품 분석 현장에서 즉시 활용 가능한
+    크로마토그래피 실무 역량을 키웁니다.
+  </p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feat-icon">🔬</div>
+      <span class="feat-tag">HANDS-ON</span>
+      <div class="feat-title">실무 중심 장비 실습</div>
+      <div class="feat-desc">실제 HPLC 장비를 직접 운용하며 시료 주입, 이동상 조제, 데이터 수집까지 현장형 실무교육을 진행합니다.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feat-icon">📊</div>
+      <span class="feat-tag">DATA ANALYSIS</span>
+      <div class="feat-title">데이터 해석 중심</div>
+      <div class="feat-desc">크로마토그램 피크 분석, 표준검량선 작성, LOD·LOQ 산출 등 분석 데이터를 직접 해석하며 역량을 내재화합니다.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feat-icon">🤖</div>
+      <span class="feat-tag">AI REVIEW</span>
+      <div class="feat-title">AI 기반 SOP 복습 프로그램</div>
+      <div class="feat-desc">수료 후에도 AI 시뮬레이터를 통해 분석 절차와 파라미터 설정 과정을 자기주도형으로 반복 학습할 수 있습니다.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feat-icon">💰</div>
+      <span class="feat-tag">FREE</span>
+      <div class="feat-title">재직자 환급과정 — 교육비 무료</div>
+      <div class="feat-desc">고용보험 가입 재직자 대상 환급과정으로 운영되어 수강료 부담 없이 수강 가능합니다.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feat-icon">🔗</div>
+      <span class="feat-tag">INTEGRATED</span>
+      <div class="feat-title">ELISA·LoC 연계 교육 예정</div>
+      <div class="feat-desc">SEC-HPLC를 기반으로 ELISA, 랩온어칩(LoC) 시료전처리 연계 훈련과정을 순차적으로 오픈할 예정입니다.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feat-icon">📜</div>
+      <span class="feat-tag">REGULATORY</span>
+      <div class="feat-title">규제과학 연계 — ICH Q2, KFDA</div>
+      <div class="feat-desc">시험분석법 밸리데이션 교육을 통해 ICH Q2(R2), 식약처, FDA 가이드라인 기반의 실무 문서 작성 역량을 함양합니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+  <span class="section-tag">교육과정</span>
+  <h2 class="section-title">3단계 실무 커리큘럼</h2>
+  <p class="section-desc">
+    RP-HPLC 기초 분석부터 SEC-HPLC 단백질 분석, 시험분석법 밸리데이션까지
+    단계별로 체계적으로 습득합니다.
+  </p>
+
+  <div class="course-list">
+
+    <!-- COURSE 01 -->
+    <div class="course-block">
+      <div class="course-num">
+        <span class="num">01</span>
+        <span class="label">COURSE</span>
+      </div>
+      <div class="course-body">
+        <div class="course-header">
+          <span class="course-badge">RP-HPLC</span>
+          <span class="course-duration">⏱ 1일 과정</span>
+        </div>
+        <div class="course-title">역상(RP)-HPLC 기본교육</div>
+        <div class="course-subtitle">역상컬럼을 이용한 카페인 함량 분석 실무 훈련</div>
+        <p class="course-desc">
+          RP-HPLC의 원리부터 컬럼 선택, 이동상 조제, 시료 전처리, 크로마토그램 해석까지
+          학습하는 기초 실무과정입니다. 카페인 표준물질을 활용한 정량분석 실습과 함께
+          AI 기반 SOP 복습 프로그램을 제공합니다.
+        </p>
+        <ul class="course-topics">
+          <li>RP-HPLC 원리 및 역상 분리 메커니즘</li>
+          <li>이동상 조제 (ACN/Water, MeOH/Water 계열)</li>
+          <li>표준검량선 작성 및 회귀분석 (R²)</li>
+          <li>시스템 적합성 평가 (Rs, N, T, k')</li>
+          <li>LOD, LOQ 산출 및 미지시료 정량 분석</li>
+          <li>크로마토그램 피크 동정 및 트러블슈팅</li>
+          <li>실습: 카페인 함량 분석 (음료·의약품 시료)</li>
+          <li>AI SOP 복습 프로그램 활용 안내</li>
+        </ul>
+        <p style="font-size:13px; color:var(--teal); margin-top:1rem; font-style:italic;">
+          ✦ 의약품, 화장품, 약용작물 등 다양한 표준물질을 활용한 추가 전처리·분석 무료 훈련과정 오픈 예정
+        </p>
+      </div>
+    </div>
+
+    <!-- COURSE 02 -->
+    <div class="course-block">
+      <div class="course-num">
+        <span class="num">02</span>
+        <span class="label">COURSE</span>
+      </div>
+      <div class="course-body">
+        <div class="course-header">
+          <span class="course-badge">SEC-HPLC</span>
+          <span class="course-duration">⏱ 1일 과정</span>
+          <span class="course-badge coming">연계과정 오픈 예정</span>
+        </div>
+        <div class="course-title">크기배제(SEC)-HPLC 교육</div>
+        <div class="course-subtitle">크기배제컬럼을 이용한 단백질 순도 분석</div>
+        <p class="course-desc">
+          SEC-HPLC의 분리 원리와 단백질 분자량 분포 분석을 학습하는 과정입니다.
+          항체·재조합 단백질의 모노머·응집체(aggregates)·단편(fragments) 분리 및
+          순도 정량 해석 능력을 훈련합니다.
+        </p>
+        <ul class="course-topics">
+          <li>SEC-HPLC 분리 원리 (크기배제 메커니즘)</li>
+          <li>단백질 분자량 마커 및 검량선 작성</li>
+          <li>모노머·응집체·단편 피크 동정 및 순도 계산</li>
+          <li>이동상 조건 최적화 (pH, 이온강도)</li>
+          <li>바이오의약품 품질분석 적용 사례</li>
+          <li>실습: 단백질 시료 SEC 분석 및 순도 산출</li>
+        </ul>
+        <p style="font-size:13px; color:var(--amber); margin-top:1rem; font-style:italic;">
+          ✦ 랩온어칩(LoC), ELISA와의 연계 훈련과정 오픈 예정
+        </p>
+      </div>
+    </div>
+
+    <!-- COURSE 03 -->
+    <div class="course-block">
+      <div class="course-num">
+        <span class="num">03</span>
+        <span class="label">COURSE</span>
+      </div>
+      <div class="course-body">
+        <div class="course-header">
+          <span class="course-badge">VALIDATION</span>
+          <span class="course-duration">⏱ 심화 과정</span>
+        </div>
+        <div class="course-title">시험분석법 밸리데이션 훈련과정</div>
+        <div class="course-subtitle">ICH Q2, 식약처, FDA 가이드라인 기반 실무 문서화 훈련</div>
+        <p class="course-desc">
+          규제기관 제출용 분석법 밸리데이션 보고서 작성을 위한 핵심 역량을 훈련합니다.
+          ICH Q2(R2), 한국 식약처, FDA 가이드라인에 기반하여 특이성·직선성·정확성·
+          정밀성·LOD/LOQ를 체계적으로 평가하고 문서화하는 실전 과정입니다.
+        </p>
+        <ul class="course-topics">
+          <li>분석법 밸리데이션 항목 개요 (ICH Q2(R2))</li>
+          <li>특이성(Specificity)·선택성 평가 전략</li>
+          <li>직선성(Linearity) — R², 기울기, 절편 분석</li>
+          <li>정확성(Accuracy) — 회수율 계산 및 허용기준</li>
+          <li>정밀성(Precision) — 반복성·중간정밀성·재현성</li>
+          <li>LOD·LOQ 산출 방법 비교 (S/N, 통계적 접근)</li>
+          <li>견고성(Robustness) 평가 — DOE 기초 적용</li>
+          <li>밸리데이션 보고서 작성 실습 (한국 KFDA 양식 기반)</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AI SIMULATOR -->
+<section id="simulator">
+  <span class="section-tag">AI REVIEW SIMULATOR</span>
+  <h2 class="section-title">교육 후에도 반복 학습</h2>
+  <p class="section-desc">
+    모든 수료자에게 AI 기반 SOP 복습 프로그램을 제공합니다.
+    HPLC 분석 절차, 파라미터 최적화, 데이터 해석까지 자기주도형 반복 학습을 지원합니다.
+  </p>
+
+  <div class="sim-grid">
+    <div class="sim-feature">
+      <span class="sim-icon">🧪</span>
+      <div class="sim-title">HPLC 분석 SOP 단계별 복습</div>
+      <div class="sim-desc">장비 세팅 → 이동상 조제 → 시료 주입 → 크로마토그램 수집 → 피크 적분까지 전 과정을 단계별로 시뮬레이션합니다.</div>
+    </div>
+
+    <div class="sim-feature">
+      <span class="sim-icon">📈</span>
+      <div class="sim-title">표준검량선 작성 및 정량 계산 연습</div>
+      <div class="sim-desc">검량선 R², 회귀식, LOD/LOQ 계산, 미지시료 농도 역산(back-calculation)을 반복 실습합니다.</div>
+    </div>
+
+    <div class="sim-feature">
+      <span class="sim-icon">⚙️</span>
+      <div class="sim-title">시스템 적합성 평가 시뮬레이션</div>
+      <div class="sim-desc">분리도(Rs), 이론단수(N), 테일링팩터(T), 용량인수(k') 계산 및 허용기준 판정 연습을 반복 수행합니다.</div>
+    </div>
+
+    <div class="sim-feature">
+      <span class="sim-icon">🔧</span>
+      <div class="sim-title">분석 오류 트러블슈팅 시뮬레이션</div>
+      <div class="sim-desc">피크 분열, 베이스라인 노이즈, 역압 이상, 피크 테일링 등 현장 오류 상황별 진단 및 대응 전략을 훈련합니다.</div>
+    </div>
+
+    <div class="sim-feature">
+      <span class="sim-icon">📋</span>
+      <div class="sim-title">밸리데이션 항목 퀴즈 및 문서 작성 훈련</div>
+      <div class="sim-desc">ICH Q2 밸리데이션 항목별 판정 기준, 계산식, 허용 범위를 AI 문답 방식으로 반복 확인하며 보고서 작성 역량을 키웁니다.</div>
+    </div>
+
+    <div class="sim-feature">
+      <span class="sim-icon">🔗</span>
+      <div class="sim-title">ELISA·LoC 연계 복습 (오픈 예정)</div>
+      <div class="sim-desc">SEC-HPLC 결과와 ELISA 정량, 랩온어칩 시료전처리 연계 과정을 통합하여 복습하는 연계 시뮬레이터를 순차 오픈 예정입니다.</div>
+    </div>
+  </div>
+
+  <div class="sim-cta">
+    <a href="https://circlenam.github.io/hplc-trainer/" class="btn-primary" target="_blank">🤖 AI 시뮬레이터 체험하기 →</a>
+    <span class="sim-note">수료자 전용 · 무료 제공</span>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <span class="section-tag">기대 효과</span>
+  <h2 class="section-title">수료 후 달라지는 것들</h2>
+  <p class="section-desc">
+    HPLC 기반 크로마토그래피 분석 전반의 실무 역량을 체계적으로 내재화합니다.
+  </p>
+
+  <div class="outcome-list">
+    <div class="outcome-item">
+      <div class="out-num">01</div>
+      <div class="out-text">RP-HPLC 기반 소분자 정량분석 역량 확보 및 현장 즉시 적용 (의약품, 화장품, 식품 등)</div>
+    </div>
+    <div class="outcome-item">
+      <div class="out-num">02</div>
+      <div class="out-text">SEC-HPLC 단백질 순도 분석, 모노머·응집체 동정 및 정량 해석 능력 내재화</div>
+    </div>
+    <div class="outcome-item">
+      <div class="out-num">03</div>
+      <div class="out-text">시스템 적합성(Rs, N, T, k') 평가 역량 강화 및 분석 트러블슈팅 대응력 향상</div>
+    </div>
+    <div class="outcome-item">
+      <div class="out-num">04</div>
+      <div class="out-text">ICH Q2, KFDA, FDA 기반 분석법 밸리데이션 보고서 자력 작성 능력 확보</div>
+    </div>
+    <div class="outcome-item">
+      <div class="out-num">05</div>
+      <div class="out-text">바이오의약품·의료기기·식품·화장품 품질분석 직무 실전 대응력 향상</div>
+    </div>
+    <div class="outcome-item">
+      <div class="out-num">06</div>
+      <div class="out-text">AI SOP 시뮬레이터를 통한 자기주도 반복 학습으로 교육 효과 장기 유지</div>
+    </div>
+  </div>
+</section>
+
+<!-- TARGET + SUBSIDY -->
+<section id="target">
+  <span class="section-tag">모집 대상</span>
+  <h2 class="section-title">이런 분들을 위한 과정입니다</h2>
+  <p class="section-desc">
+    바이오·제약·식품·의료기기·화장품 분야 종사자라면 누구나 신청 가능합니다.
+  </p>
+
+  <div class="target-grid">
+    <ul class="target-list">
+      <li><span class="check"></span>바이오·제약·의약품 분야 품질분석 재직자</li>
+      <li><span class="check"></span>식품·화장품·약용작물 분석 업무 담당자</li>
+      <li><span class="check"></span>바이오의약품(항체·단백질) 품질관리 연구자</li>
+      <li><span class="check"></span>체외진단·의료기기 분야 분석 담당자</li>
+      <li><span class="check"></span>HPLC 장비 활용 역량이 필요한 연구·개발 인력</li>
+      <li><span class="check"></span>규제 문서(밸리데이션 보고서) 작성 역량을 키우려는 분</li>
+      <li><span class="check"></span>HPLC 분야 취업을 준비 중인 구직자·졸업예정자</li>
+    </ul>
+
+    <div class="subsidy-box">
+      <h3>GOVERNMENT SUBSIDY PROGRAM</h3>
+      <h2>재직자 환급과정<br>교육비 무료 지원</h2>
+      <ul class="subsidy-list">
+        <li>고용보험 가입 재직자 지원 대상</li>
+        <li>교육비 무료 지원 가능</li>
+        <li>현장 실습 중심 운영</li>
+        <li>교육 종료 후 AI SOP 복습 시뮬레이터 제공</li>
+        <li>환급 가능 여부 및 세부 조건은 신청 시 별도 안내</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <span class="section-tag">문의 · 신청</span>
+  <h2 class="section-title">지금 바로 신청하세요</h2>
+  <p class="section-desc">
+    교육 신청, 일정 협의, 환급과정 관련 문의는 아래 채널을 통해 연락 주시기 바랍니다.
+    바이오분석 교육운영팀이 신속히 안내드립니다.
+  </p>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <span class="cc-icon">📧</span>
+      <span class="cc-label">EMAIL</span>
+      <div class="cc-value"><a href="mailto:namjh@jeiu.ac.kr">namjh@jeiu.ac.kr</a></div>
+    </div>
+
+    <div class="contact-card">
+      <span class="cc-icon">📍</span>
+      <span class="cc-label">LOCATION</span>
+      <div class="cc-value">재능대학교 K-하이테크플랫폼사업단<br>바이오분석 실습교육실</div>
+    </div>
+
+    <div class="contact-card">
+      <span class="cc-icon">🏛️</span>
+      <span class="cc-label">OPERATION</span>
+      <div class="cc-value">오프라인 현장교육 + 실습<br>+ AI SOP 복습 시뮬레이터</div>
+    </div>
+
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd81kdOP_xEvw6zx1spXd8CZuEJ6TKH1tXiuf4f6UNAU0WdUg/viewform" class="contact-apply" target="_blank">
+      <span class="apply-label">APPLY NOW</span>
+      <span class="apply-text">교육 신청<br>문의하기</span>
+      <span class="apply-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-info">
+    재능대학교 바이오테크과 · AI-바이오분석특화연구소 · K-하이테크플랫폼사업단<br>
+    JEI University · Dept. of Biotechnology · Incheon, Korea<br>
+    © 2025 KHP-HPLC Program
+  </div>
+  <div class="footer-logo">KHP-HPLC</div>
+</footer>
+
+</body>
+</html>
